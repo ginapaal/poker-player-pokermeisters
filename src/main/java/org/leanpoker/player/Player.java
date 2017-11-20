@@ -42,6 +42,7 @@ public class Player {
                         bet = arrayData.get("bet").getAsInt();
                         String mycardRank = card.get("rank").getAsString();
                         String mycardSuit = card.get("suit").getAsString();
+                        System.out.println(mycardSuit);
                         myCards.add(mycardRank);
                         myCards.add(mycardSuit);
                     }
@@ -90,7 +91,7 @@ public class Player {
         if (pair >= 3) {
             bet = pair * 25;
         }
-        if (color == 5) {
+        if (color >= 2) {
             bet += 50;
         }
         if (cards.size() ==0){
