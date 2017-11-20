@@ -16,43 +16,57 @@ public class Player {
 
     public static int betRequest(JsonElement request) {
         try {
-        JsonObject jsonObject = request.getAsJsonObject();
-        int currentBuyIn = jsonObject.get("current_buy_in").getAsInt();
-        int minimumRaise = jsonObject.get("minimum_raise").getAsInt();
-        JsonArray array = jsonObject.get("players").getAsJsonArray();
-        List<String> myCards = new ArrayList();
-        int bet = 0;
-        int in_action = jsonObject.get("in_action").getAsInt();
-        for (int i = 0; i < array.size(); i++) {
-            JsonObject arrayData = array.get(i).getAsJsonObject();
-            bet = arrayData.get("bet").getAsInt();
-            System.out.println(bet);
-            JsonArray holeCards = arrayData.get("hole_cards").getAsJsonArray();
-            for (int j = 0; j < holeCards.size(); j++) {
-                JsonObject card = holeCards.get(j).getAsJsonObject();
-                if (in_action == i) {
-                    String mycardRank = card.get("rank").getAsString();
-                    String mycardSuit = card.get("suit").getAsString();
-                    myCards.add(mycardRank);
-                    myCards.add(mycardSuit);
+            JsonObject jsonObject = request.getAsJsonObject();
+            int currentBuyIn = jsonObject.get("current_buy_in").getAsInt();
+            int minimumRaise = jsonObject.get("minimum_raise").getAsInt();
+            JsonArray array = jsonObject.get("players").getAsJsonArray();
+            List<String> myCards = new ArrayList();
+            List<String> communityCardsList = new ArrayList();
+            JsonArray communityCards = jsonObject.get("community_cards").getAsJsonArray();
+
+            for (int i = 0; i < communityCards.size(); i++) {
+                communityCardsList.add(communityCards.get(i).getAsString());
+            }
+
+            int bet = 0;
+            int in_action = jsonObject.get("in_action").getAsInt();
+            for (int i = 0; i < array.size(); i++) {
+                JsonObject arrayData = array.get(i).getAsJsonObject();
+                System.out.println(bet);
+                JsonArray holeCards = arrayData.get("hole_cards").getAsJsonArray();
+                for (int j = 0; j < holeCards.size(); j++) {
+                    JsonObject card = holeCards.get(j).getAsJsonObject();
+                    if (in_action == i) {
+                        bet = arrayData.get("bet").getAsInt();
+                        String mycardRank = card.get("rank").getAsString();
+                        String mycardSuit = card.get("suit").getAsString();
+                        myCards.add(mycardRank);
+                        myCards.add(mycardSuit);
+                    }
                 }
             }
-        }
+            List<Card> cardOnTable = new ArrayList<>();
+            for (int i = 0; i < communityCardsList.size(); i++) {
+                cardOnTable.add(new Card(communityCardsList.get(i), communityCardsList.get(++i)));
+            }
+            List<Card> myCardList = new ArrayList<>();
 
             Card card1 = new Card(myCards.get(0), myCards.get(1));
             Card card2 = new Card(myCards.get(0), myCards.get(1));
-
-
+            myCardList.add(card1);
+            myCardList.add(card2);
+            int newBet = logic(myCardList, cardOnTable);
             if (card1.isSuitSame(card2)) {
                 return currentBuyIn - bet + minimumRaise;
             } else if (card1.isRankSame(card2)) {
-                return currentBuyIn - bet + minimumRaise;
+                return currentBuyIn - bet + minimumRaise + newBet;
 
+            } else {
+                return 0;
             }
         } catch (Exception e) {
             return 0;
         }
-        return 0;
     }
 
     public static void showdown(JsonElement game) {
@@ -72,7 +86,7 @@ public class Player {
                 }
             }
         }
-        if (pair >= 2) {
+        if (pair >= 3) {
             bet = pair * 200;
         }
         if (color == 5) {
