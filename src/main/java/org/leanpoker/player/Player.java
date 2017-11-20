@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -17,8 +18,9 @@ public class Player {
         JsonObject jsonObject = request.getAsJsonObject();
         int currentBuyIn = jsonObject.get("current_buy_in").getAsInt();
         JsonArray array = jsonObject.get("players").getAsJsonArray();
-        System.out.println(array);
+        List myCards = new ArrayList();
         int bet = 0;
+        int in_action = jsonObject.get("in_action").getAsInt();
         for (int i = 0; i < array.size(); i++) {
             JsonObject arrayData = array.get(i).getAsJsonObject();
             bet = arrayData.get("bet").getAsInt();
@@ -26,11 +28,15 @@ public class Player {
             JsonArray holeCards = arrayData.get("hole_cards").getAsJsonArray();
             for (int j = 0; j < holeCards.size(); j++) {
                 JsonObject card = holeCards.get(j).getAsJsonObject();
-                String cardRank = card.get("rank").getAsString();
-                String cardSuit = card.get("suit").getAsString();
+                if (in_action == i) {
+                    String mycardRank = card.get("rank").getAsString();
+                    String mycardSuit = card.get("suit").getAsString();
+                    myCards.add(mycardRank);
+                    myCards.add(mycardSuit);
+                }
             }
         }
-        int in_action = jsonObject.get("in_action").getAsInt();
+        System.out.println(myCards);
         System.out.println(bet);
         return 0;
     }
