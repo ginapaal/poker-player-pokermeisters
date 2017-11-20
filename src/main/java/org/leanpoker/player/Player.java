@@ -16,7 +16,8 @@ public class Player {
         JsonElement bet = players.get("bet");
         int intCurrBuyIn = currBuyIn.getAsInt();
         int intBet = bet.getAsInt();
-        return intCurrBuyIn - intBet + 5;
+
+        return 0;
     }
 
     public static void showdown(JsonElement game) {
