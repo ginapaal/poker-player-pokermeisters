@@ -11,13 +11,18 @@ public class Player {
 
     public static int betRequest(JsonElement request) {
         JsonObject jsonObject = request.getAsJsonObject();
+        JsonElement inAction = jsonObject.get("in_action");
+        String stringInAction = inAction.getAsString();
         JsonElement currBuyIn = jsonObject.get("current_buy_in");
-        JsonObject players = jsonObject.get("players").getAsJsonObject();
-        JsonElement bet = players.get("bet");
-        int intCurrBuyIn = currBuyIn.getAsInt();
-        int intBet = bet.getAsInt();
 
-        return intCurrBuyIn+15;
+        JsonObject players = jsonObject.get("players").getAsJsonObject();
+        JsonElement ourPlayerNum = players.get(stringInAction);
+        int intCurrBuyIn = currBuyIn.getAsInt();
+        JsonObject ourPlayer = ourPlayerNum.getAsJsonObject();
+        JsonElement ourPlayerBet = ourPlayer.get("bet");
+        int intBet = ourPlayerBet.getAsInt();
+
+        return intCurrBuyIn - intBet;
     }
 
     public static void showdown(JsonElement game) {

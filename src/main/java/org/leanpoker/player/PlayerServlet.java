@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 @WebServlet("/")
 public class PlayerServlet extends HttpServlet {
@@ -15,6 +16,9 @@ public class PlayerServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.getWriter().print("Java player is running");
+        PrintWriter out = resp.getWriter();
+        out.print(req.getContextPath());
+
     }
 
     @Override
