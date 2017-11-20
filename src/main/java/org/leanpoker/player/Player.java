@@ -57,10 +57,9 @@ public class Player {
             myCardList.add(card2);
             int newBet = logic(myCardList, cardOnTable);
             if (card1.isSuitSame(card2)) {
-                return currentBuyIn - bet + minimumRaise;
+                return currentBuyIn - bet + minimumRaise + newBet;
             } else if (card1.isRankSame(card2)) {
                 return currentBuyIn - bet + minimumRaise + newBet;
-
             } else {
                 return 0;
             }
