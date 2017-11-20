@@ -15,16 +15,14 @@ public class Player {
     static final String VERSION = "Default Java folding player";
 
     public static int betRequest(JsonElement request) {
-//        try {
+        try {
             JsonObject jsonObject = request.getAsJsonObject();
             int currentBuyIn = jsonObject.get("current_buy_in").getAsInt();
-        int minimumRaise;
-            try {
-                minimumRaise = jsonObject.get("minimum_raise").getAsInt();
-            } catch (Exception e) {
-                minimumRaise = 10;
-            }
-        System.out.println(minimumRaise);
+            int minimumRaise;
+
+            minimumRaise = jsonObject.get("minimum_raise").getAsInt();
+
+            System.out.println(minimumRaise);
             JsonArray array = jsonObject.get("players").getAsJsonArray();
             List<String> myCards = new ArrayList();
             List<String> communityCardsList = new ArrayList();
@@ -69,9 +67,9 @@ public class Player {
             } else {
                 return 0;
             }
-//        } catch (Exception e) {
-//            return 0;
-//        }
+        } catch (Exception e) {
+            return 0;
+        }
     }
 
     public static void showdown(JsonElement game) {
