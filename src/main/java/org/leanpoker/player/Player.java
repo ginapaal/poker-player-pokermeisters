@@ -17,8 +17,9 @@ public class Player {
     public static int betRequest(JsonElement request) {
         JsonObject jsonObject = request.getAsJsonObject();
         int currentBuyIn = jsonObject.get("current_buy_in").getAsInt();
+        int minimumRaise = jsonObject.get("minimum_raise").getAsInt();
         JsonArray array = jsonObject.get("players").getAsJsonArray();
-        List myCards = new ArrayList();
+        List<String> myCards = new ArrayList();
         int bet = 0;
         int in_action = jsonObject.get("in_action").getAsInt();
         for (int i = 0; i < array.size(); i++) {
@@ -36,34 +37,44 @@ public class Player {
                 }
             }
         }
-        System.out.println(myCards);
-        System.out.println(bet);
-        return 0;
+        try {
+            Card card1 = new Card(myCards.get(0), myCards.get(1));
+            Card card2 = new Card(myCards.get(0), myCards.get(1));
 
+
+            if (card1.isSuitSame(card2)) {
+                return currentBuyIn - bet + minimumRaise;
+            } else if (card1.isRankSame(card2)) {
+                return currentBuyIn - bet + minimumRaise;
+
+            }
+        } catch (Exception e) {
+            return 0;
+        }
+        return 0;
     }
 
     public static void showdown(JsonElement game) {
     }
 
-    public static int logic(List<Card> myCards,List<Card> cards){
+    public static int logic(List<Card> myCards, List<Card> cards) {
         int pair = 0;
         int color = 0;
         int bet = 0;
-        for (Card card: cards){
-            for (Card myCard: myCards){
-                if (card.isRankSame(myCard)){
+        for (Card card : cards) {
+            for (Card myCard : myCards) {
+                if (card.isRankSame(myCard)) {
                     pair++;
                 }
-                if (card.isSuitSame(myCard)){
+                if (card.isSuitSame(myCard)) {
                     color++;
                 }
             }
         }
-
-        if (pair >=2){
+        if (pair >= 2) {
             bet = pair * 200;
         }
-        if (color ==5){
+        if (color == 5) {
             bet += 500;
         }
         return bet;
