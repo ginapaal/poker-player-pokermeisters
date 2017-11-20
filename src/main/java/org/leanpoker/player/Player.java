@@ -26,8 +26,33 @@ public class Player {
         int in_action = jsonObject.get("in_action").getAsInt();
         System.out.println(in_action);
         return 0;
+
     }
 
     public static void showdown(JsonElement game) {
+    }
+
+    public static int logic(List<Card> myCards,List<Card> cards){
+        int pair = 0;
+        int color = 0;
+        int bet = 0;
+        for (Card card: cards){
+            for (Card myCard: myCards){
+                if (card.isRankSame(myCard)){
+                    pair++;
+                }
+                if (card.isSuitSame(myCard)){
+                    color++;
+                }
+            }
+        }
+
+        if (pair >=2){
+            bet = pair * 200;
+        }
+        if (color ==5){
+            bet += 500;
+        }
+        return bet;
     }
 }
