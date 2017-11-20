@@ -19,6 +19,14 @@ public class Player {
         int currentBuyIn = jsonObject.get("current_buy_in").getAsInt();
         JsonArray array = jsonObject.get("players").getAsJsonArray();
         List myCards = new ArrayList();
+        List<String> myCards = new ArrayList();
+        List<String> communityCardsList = new ArrayList();
+        JsonArray communityCards = jsonObject.get("community_cards").getAsJsonArray();
+
+        for (int i = 0; i < communityCards.size(); i++) {
+            communityCardsList.add(communityCards.get(i).getAsString());
+        }
+
         int bet = 0;
         int in_action = jsonObject.get("in_action").getAsInt();
         for (int i = 0; i < array.size(); i++) {
