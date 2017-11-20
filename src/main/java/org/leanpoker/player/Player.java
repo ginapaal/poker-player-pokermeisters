@@ -18,33 +18,28 @@ public class Player {
         try {
             JsonObject jsonObject = request.getAsJsonObject();
             int currentBuyIn = jsonObject.get("current_buy_in").getAsInt();
-        System.out.println(currentBuyIn);
             int minimumRaise;
-            try {
-                minimumRaise = jsonObject.get("minimum_raise").getAsInt();
-            } catch (Exception e) {
-                minimumRaise = 20;
-            }
+            minimumRaise = jsonObject.get("minimum_raise").getAsInt();
+            System.out.println(minimumRaise);
             JsonArray array = jsonObject.get("players").getAsJsonArray();
             List<String> myCards = new ArrayList();
             List<String> communityCardsList = new ArrayList();
             JsonArray communityCards = jsonObject.get("community_cards").getAsJsonArray();
-            int bet = 0;
+
             for (int i = 0; i < communityCards.size(); i++) {
                 communityCardsList.add(communityCards.get(i).getAsString());
             }
 
-
+            int bet = 0;
             int in_action = jsonObject.get("in_action").getAsInt();
             for (int i = 0; i < array.size(); i++) {
                 JsonObject arrayData = array.get(i).getAsJsonObject();
-
+                System.out.println(bet);
                 JsonArray holeCards = arrayData.get("hole_cards").getAsJsonArray();
                 for (int j = 0; j < holeCards.size(); j++) {
                     JsonObject card = holeCards.get(j).getAsJsonObject();
                     if (in_action == i) {
                         bet = arrayData.get("bet").getAsInt();
-                        System.out.println(bet);
                         String mycardRank = card.get("rank").getAsString();
                         String mycardSuit = card.get("suit").getAsString();
                         myCards.add(mycardRank);
@@ -52,7 +47,6 @@ public class Player {
                     }
                 }
             }
-            System.out.println(bet);
             List<Card> cardOnTable = new ArrayList<>();
             for (int i = 0; i < communityCardsList.size(); i++) {
                 cardOnTable.add(new Card(communityCardsList.get(i), communityCardsList.get(++i)));
@@ -65,10 +59,8 @@ public class Player {
             myCardList.add(card2);
             int newBet = logic(myCardList, cardOnTable);
             if (card1.isSuitSame(card2)) {
-                System.out.println("suitsame");
                 return currentBuyIn - bet + minimumRaise + newBet;
             } else if (card1.isRankSame(card2)) {
-                System.out.println("ranksame");
                 return currentBuyIn - bet + minimumRaise + newBet;
             } else {
                 return 0;
@@ -101,6 +93,11 @@ public class Player {
         if (color == 5) {
             bet += 50;
         }
+        if (cards.size() ==0){
+            bet = 100;
+        }
+        List<Card> allCard = new ArrayList<>();
+
         return bet;
     }
 }
