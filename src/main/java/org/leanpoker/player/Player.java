@@ -17,7 +17,7 @@ public class Player {
         int intCurrBuyIn = currBuyIn.getAsInt();
         int intBet = bet.getAsInt();
 
-        return 0;
+        return intCurrBuyIn+15;
     }
 
     public static void showdown(JsonElement game) {
