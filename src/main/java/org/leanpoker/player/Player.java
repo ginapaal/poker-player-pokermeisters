@@ -15,6 +15,7 @@ public class Player {
     static final String VERSION = "Default Java folding player";
 
     public static int betRequest(JsonElement request) {
+        try {
         JsonObject jsonObject = request.getAsJsonObject();
         int currentBuyIn = jsonObject.get("current_buy_in").getAsInt();
         int minimumRaise = jsonObject.get("minimum_raise").getAsInt();
@@ -37,7 +38,7 @@ public class Player {
                 }
             }
         }
-        try {
+
             Card card1 = new Card(myCards.get(0), myCards.get(1));
             Card card2 = new Card(myCards.get(0), myCards.get(1));
 
