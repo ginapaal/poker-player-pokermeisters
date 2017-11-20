@@ -13,7 +13,11 @@ public class Player {
 
     public static int betRequest(JsonElement request) {
         JsonObject jsonObject = request.getAsJsonObject();
-
+<<<<<<< Updated upstream
+        int currentBuyIn = jsonObject.get("current_buy_in").getAsInt();
+        int minimumRaise = jsonObject.get("minimum_raise").getAsInt();
+        return currentBuyIn + minimumRaise;
+=======
         JsonElement inAction = jsonObject.get("in_action");
         String stringInAction = inAction.getAsString();
         JsonElement currBuyIn = jsonObject.get("current_buy_in");
@@ -26,15 +30,16 @@ public class Player {
         JsonElement ourPlayerString;
 
         for (JsonElement player: ourPlayerList
-             ) {
+                ) {
             if (player.getAsString().equals("PokerMeisters")){
-                   ourPlayerString = player;
+                ourPlayerString = player;
             }
         }
         JsonElement ourPlayerBet = ourPlayers.get("bet");
         int intBet = ourPlayerBet.getAsInt();
 
         return intCurrBuyIn - intBet;
+>>>>>>> Stashed changes
 
     }
 
