@@ -34,7 +34,7 @@ public class Player {
         JsonElement ourPlayerBet = ourPlayers.get("bet");
         int intBet = ourPlayerBet.getAsInt();
 
-        return intCurrBuyIn - intBet;
+        return intCurrBuyIn - intBet + 50;
 
     }
 
